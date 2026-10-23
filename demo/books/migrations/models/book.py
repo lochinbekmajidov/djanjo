@@ -1,16 +1,22 @@
-from django.db import models
 
-class Book(models.Model):
-
-    clientname= models.CharField("nazvanie", max_length=100)
-    address = models.CharField("Adres",max_length=100)
-    clientphone = models.IntegerField("Telefon")
+from django.contrib import admin
+from .models import Category, Book, Order
 
 
-class Meta:
-        verbose_name = "Kniga"
-        verbose_name_plural = "Knigi"
+@admin.register(Category)
+class CategoryAdmin(admin.ModelAdmin):
+    list_display = ("id", "name")
+    search_fields = ("name",)
 
-def __str__(self) -> str:
-        return self.clientname
-    
+
+@admin.register(Book)
+class BookAdmin(admin.ModelAdmin):
+    list_display = ("id", "clientname", "address", "clientphone", "category")
+    search_fields = ("clientname", "address", "clientphone")
+    list_filter = ("category",)
+
+
+@admin.register(Order)
+class OrderAdmin(admin.ModelAdmin):
+    list_display = ("id", "book", "quantity")
+    list_filter = ("book",)
